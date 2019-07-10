@@ -9,6 +9,7 @@
 #include <QListWidget>
 #include <QLabel>
 
+#include "budget.hpp"
 
 class ExpenseWidget : public QWidget {
 	Q_OBJECT
@@ -17,7 +18,12 @@ public:
 	ExpenseWidget();
 	~ExpenseWidget();
 
-
+public slots:
+	void clearEntry();
+	void addExpense();
+	void activateButtons();
+	void deleteItem();
+	
 private:
 	QPushButton* b_edit;
 	QPushButton* b_delete;

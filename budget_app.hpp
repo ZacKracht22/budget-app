@@ -5,6 +5,7 @@
 #include <QLayout>
 
 #include "expense_widget.hpp"
+#include "budget.hpp"
 
 
 class BudgetApp : public QWidget {

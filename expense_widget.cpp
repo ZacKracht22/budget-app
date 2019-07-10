@@ -1,4 +1,6 @@
 #include "expense_widget.hpp"
+#include <iomanip>
+#include <sstream>
 
 ExpenseWidget::ExpenseWidget() {
 	//Create widget layout for buttons edit, delete, and reset
@@ -7,7 +9,6 @@ ExpenseWidget::ExpenseWidget() {
 	b_delete = new QPushButton("Delete");
 	b_delete->setEnabled(false);
 	b_reset = new QPushButton("Reset");
-	b_reset->setEnabled(false);
 	QVBoxLayout *b_layout = new QVBoxLayout();
 	b_layout->addWidget(b_edit);
 	b_layout->addWidget(b_delete);
@@ -33,6 +34,8 @@ ExpenseWidget::ExpenseWidget() {
 	cost = new QDoubleSpinBox();
 	cost->setMinimum(0.0);
 	cost->setSingleStep(0.5);
+	cost->setDecimals(2);
+	cost->setMaximum(1000000);
 	cost->setPrefix("$");
 	QVBoxLayout* c_layout = new QVBoxLayout();
 	c_layout->addWidget(l_cost);
@@ -54,8 +57,8 @@ ExpenseWidget::ExpenseWidget() {
 	QWidget* middle = new QWidget();
 	middle->setLayout(h_layout2);
 
-	b_add = new QPushButton("Add");
-	b_clear = new QPushButton("Clear");
+	b_add = new QPushButton("Add Entry");
+	b_clear = new QPushButton("Clear Entry");
 	QHBoxLayout *h_layout3 = new QHBoxLayout();
 	h_layout3->addWidget(b_add);
 	h_layout3->addWidget(b_clear);
@@ -68,8 +71,40 @@ ExpenseWidget::ExpenseWidget() {
 	layout_overall->addWidget(bottom);
 
 	setLayout(layout_overall);
+
+	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
+	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addExpense()));
+	QObject::connect(b_delete, SIGNAL(clicked()), this, SLOT(deleteItem()));
+	QObject::connect(b_reset, SIGNAL(clicked()), itemTable, SLOT(clear()));
+	QObject::connect(itemTable, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
 }
 
 ExpenseWidget::~ExpenseWidget() {
 
+}
+
+void ExpenseWidget::clearEntry() {
+	cost->setValue(0.0);
+	description->clear();
+}
+
+void ExpenseWidget::addExpense() {
+	double expense_cost = cost->value();
+
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(2) << expense_cost;
+	std::string s = stream.str();
+	QString expence_description = description->text();
+
+	QString item_to_add = QString::fromStdString(s) + QString::fromStdString("\t") + expence_description;
+	itemTable->addItem(item_to_add);
+}
+
+void ExpenseWidget::activateButtons() {
+	b_edit->setEnabled(true);
+	b_delete->setEnabled(true);
+}
+
+void ExpenseWidget::deleteItem() {
+	itemTable->takeItem(itemTable->currentRow());
 }
