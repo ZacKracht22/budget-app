@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QLayout>
 
+#include "expense_widget.hpp"
+
 
 class BudgetApp : public QWidget {
 	Q_OBJECT
@@ -14,7 +16,7 @@ public:
 
 
 private:
-
+	ExpenseWidget* expense;
 };
 
 #endif
