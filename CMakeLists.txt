@@ -17,6 +17,26 @@ if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
   set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-# build the program
-add_executable(unit_tests budget.cpp budget.hpp budget_test.cpp)
-target_link_libraries(unit_tests Qt5::Widgets Qt5::Test)
+set(gui_src
+	expense_widget.cpp
+	budget_app.cpp
+  )
+
+# main entry point for GUI interface
+set(gui_main
+  main.cpp
+)
+
+
+
+if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
+	# build the program
+	add_executable(budget_app ${gui_main} ${gui_src})
+	target_link_libraries(budget_app Qt5::Widgets Qt5::Test)
+
+	add_executable(unit_tests budget.cpp budget.hpp budget_test.cpp)
+	target_link_libraries(unit_tests Qt5::Widgets Qt5::Test)
+
+else (Qt5Widgets_FOUND AND Qt5Test_FOUND)
+  message("Qt >= 5.9  needs to be installed to build the budget interface and related tests.")
+endif (Qt5Widgets_FOUND AND Qt5Test_FOUND)

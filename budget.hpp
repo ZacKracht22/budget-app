@@ -34,6 +34,8 @@ public:
 	
 	//copy assignment
 	Budget& operator=(const Budget& x);
+
+	void addIncome(double amount);
 	
 	//add an expense with cost to the budget
 	void addExpense(std::string name, double cost);
@@ -59,6 +61,8 @@ public:
 	void removeExpense();
 	
 	void removeWeight();
+
+	std::map<std::string, double> weightsToValues();
 	
 
 private:
@@ -70,5 +74,4 @@ private:
 	double m_totalWeight;
 };
 
-//#include "budget.cpp"
 #endif

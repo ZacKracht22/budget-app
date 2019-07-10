@@ -56,6 +56,11 @@ Budget& Budget::operator=(const Budget& x){
 	return *this;
 }
 
+void Budget::addIncome(double amount) {
+	m_monthlyIncome += amount;
+	m_remaining += amount;
+}
+
 void Budget::addExpense(std::string name, double cost){
 	if(m_remaining - cost < 0){
 		throw std::logic_error("Error: Not enough income to add this cost");
@@ -117,4 +122,6 @@ void Budget::removeWeight(){
 	return;
 }
 
-
+std::map<std::string, double> Budget::weightsToValues() {
+	return std::map<std::string, double>();
+}
