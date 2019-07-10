@@ -8,14 +8,28 @@ Description: Implementation of Budget class to be used in the budget_app
 #include "budget.hpp"
 #include <stdexcept>
 
-Budget::Budget(){
-	Budget(0);
-}
-
 Budget::Budget(double income){
 	m_monthlyIncome = income;
 	m_remaining = income;
 	m_totalWeight = 0;
+}
+
+Budget::Budget(double income, std::map<std::string, double> expenses, std::map<std::string, double> weights) {
+	m_monthlyIncome = income;
+	m_expenses = expenses;
+	m_weights = weights;
+
+	//Calculate the remaining income left
+	m_remaining = income;
+	for (auto &e : expenses) {
+		m_remaining -= e.second;
+	}
+
+	//Calculate the total weight of spending categories
+	m_totalWeight = 0;
+	for (auto &w : weights) {
+		m_totalWeight += w.second;
+	}
 }
 
 Budget::Budget(const Budget& x){
@@ -31,11 +45,15 @@ Budget::~Budget(){
 }
 
 Budget& Budget::operator=(const Budget& x){
-	m_expenses = x.m_expenses;
-	m_weights = x.m_weights;
-	m_monthlyIncome = x.m_monthlyIncome;
-	m_remaining = x.m_remaining;
-	m_totalWeight = x.m_totalWeight;
+
+	if (this != &x) {
+		m_expenses = x.m_expenses;
+		m_weights = x.m_weights;
+		m_monthlyIncome = x.m_monthlyIncome;
+		m_remaining = x.m_remaining;
+		m_totalWeight = x.m_totalWeight;
+	}
+	return *this;
 }
 
 void Budget::addExpense(std::string name, double cost){
@@ -85,6 +103,10 @@ double Budget::getIncome(){
 
 double Budget::getRemaining(){
 	return m_remaining;
+}
+
+double Budget::getTotalWeight() {
+	return m_totalWeight;
 }
 
 void Budget::removeExpense(){

@@ -11,17 +11,20 @@ Description: Header file containing interface for a monthly budget
 #include <cstdlib>
 #include <cstddef>
 #include <string>
+#include <map>
 
 //Interface for creating and modifying a monthly-based budget
 class Budget
 {
-private:
-	//default constructor, should never get called
-	Budget();
-	
 public:
+	//default constructor
+	Budget() {};
+
 	//constructor with initial income
 	Budget(double income);
+
+	//constructor with initial income, expenses, and weights
+	Budget(double income, std::map<std::string, double> expenses, std::map<std::string, double> weights);
 	
 	//copy constructor
 	Budget(const Budget& x);
@@ -49,6 +52,9 @@ public:
 	
 	//getter function for remaining variable
 	double getRemaining();
+
+	//getter function for total weights
+	double getTotalWeight();
 	
 	void removeExpense();
 	
@@ -62,10 +68,7 @@ private:
 	double m_monthlyIncome;
 	double m_remaining;
 	double m_totalWeight;
-	
-	//helper function to update the remainder cost when a new item is added
-	void UpdateRemaining(double cost);
 };
 
-#include "budget.cpp"
+//#include "budget.cpp"
 #endif

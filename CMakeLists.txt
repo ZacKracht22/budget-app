@@ -18,5 +18,5 @@ if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
 endif()
 
 # build the program
-add_executable(unit_tests linked_list.tpp linked_list.hpp list_tests.cpp)
+add_executable(unit_tests budget.cpp budget.hpp budget_test.cpp)
 target_link_libraries(unit_tests Qt5::Widgets Qt5::Test)
