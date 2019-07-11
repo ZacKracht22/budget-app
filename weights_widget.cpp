@@ -1,9 +1,10 @@
-#include "expense_widget.hpp"
+#include "weights_widget.hpp"
 #include <iomanip>
 #include <sstream>
 #include <QDebug>
 
-ExpenseWidget::ExpenseWidget() {
+
+WeightsWidget::WeightsWidget() {
 	//Create widget layout for buttons edit, delete, and reset
 	b_edit = new QPushButton("Edit");
 	b_edit->setEnabled(false);
@@ -17,7 +18,7 @@ ExpenseWidget::ExpenseWidget() {
 	QWidget* buttons1 = new QWidget();
 	buttons1->setLayout(b_layout);
 
-	QLabel* l_table = new QLabel("Expenses");
+	QLabel* l_table = new QLabel("Weights");
 	itemTable = new QListWidget();
 	QVBoxLayout* t_layout = new QVBoxLayout();
 	t_layout->addWidget(l_table);
@@ -31,18 +32,18 @@ ExpenseWidget::ExpenseWidget() {
 	QWidget* top = new QWidget();
 	top->setLayout(h_layout1);
 
-	QLabel* l_cost = new QLabel("Cost:");
-	cost = new QDoubleSpinBox();
-	cost->setMinimum(0.0);
-	cost->setSingleStep(10);
-	cost->setDecimals(2);
-	cost->setMaximum(1000000);
-	cost->setPrefix("$");
-	QVBoxLayout* c_layout = new QVBoxLayout();
-	c_layout->addWidget(l_cost);
-	c_layout->addWidget(cost);
-	QWidget* cost_widget = new QWidget();
-	cost_widget->setLayout(c_layout);
+	QLabel* l_weight = new QLabel("Weight:");
+	weight = new QDoubleSpinBox();
+	weight->setMinimum(0.0);
+	weight->setSingleStep(10);
+	weight->setDecimals(1);
+	weight->setMaximum(100);
+	weight->setSuffix("%");
+	QVBoxLayout* w_layout = new QVBoxLayout();
+	w_layout->addWidget(l_weight);
+	w_layout->addWidget(weight);
+	QWidget* weights_widget = new QWidget();
+	weights_widget->setLayout(w_layout);
 
 	QLabel* l_description = new QLabel("Description:");
 	description = new QLineEdit();
@@ -53,7 +54,7 @@ ExpenseWidget::ExpenseWidget() {
 	desc->setLayout(d_layout);
 
 	QHBoxLayout *h_layout2 = new QHBoxLayout();
-	h_layout2->addWidget(cost_widget);
+	h_layout2->addWidget(weights_widget);
 	h_layout2->addWidget(desc);
 	QWidget* middle = new QWidget();
 	middle->setLayout(h_layout2);
@@ -74,53 +75,52 @@ ExpenseWidget::ExpenseWidget() {
 	setLayout(layout_overall);
 
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
-	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addExpense()));
+	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addWeight()));
 	QObject::connect(b_delete, SIGNAL(clicked()), this, SLOT(deleteItem()));
 	QObject::connect(b_reset, SIGNAL(clicked()), itemTable, SLOT(clear()));
 	QObject::connect(b_edit, SIGNAL(clicked()), this, SLOT(editEntry()));
 	QObject::connect(itemTable, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
 }
 
-ExpenseWidget::~ExpenseWidget() {
+WeightsWidget::~WeightsWidget() {
 
 }
 
-void ExpenseWidget::clearEntry() {
-	cost->setValue(0.0);
+void WeightsWidget::clearEntry() {
+	weight->setValue(0.0);
 	description->clear();
 }
 
-void ExpenseWidget::addExpense() {
-	double expense_cost = cost->value();
+void WeightsWidget::addWeight() {
+	double weight_value = weight->value();
 
 	std::stringstream stream;
-	stream << std::fixed << std::setprecision(2) << expense_cost;
+	stream << std::fixed << std::setprecision(1) << weight_value;
 	std::string s = stream.str();
-	QString expence_description = description->text();
+	QString weight_description = description->text();
 
-	QString item_to_add = QString::fromStdString("$" + s + "\t") + expence_description;
+	QString item_to_add = QString::fromStdString(s + "%" + "\t") + weight_description;
 	itemTable->addItem(item_to_add);
 }
 
-void ExpenseWidget::activateButtons() {
+void WeightsWidget::activateButtons() {
 	b_edit->setEnabled(true);
 	b_delete->setEnabled(true);
 }
 
-void ExpenseWidget::deleteItem() {
+void WeightsWidget::deleteItem() {
 	itemTable->takeItem(itemTable->currentRow());
 }
 
-void ExpenseWidget::editEntry() {
+void WeightsWidget::editEntry() {
 	QListWidgetItem* item = itemTable->takeItem(itemTable->currentRow());
 	QString s = item->text();
-	std::string expenseString = s.toStdString();
+	std::string weightString = s.toStdString();
 
-	std::string costString = expenseString.substr(0, expenseString.find("\t"));
-	costString = costString.substr(1, costString.length()); //remove '$'
-	double costValue = atof(costString.c_str());
-	cost->setValue(costValue);
+	std::string w = weightString.substr(0, weightString.find("%"));
+	double weightValue = atof(w.c_str());
+	weight->setValue(weightValue);
 
-	std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
+	std::string descriptionString = weightString.substr(weightString.find("\t") + 1, weightString.length());
 	description->setText(QString::fromStdString(descriptionString));
 }

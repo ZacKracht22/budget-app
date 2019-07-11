@@ -19,6 +19,7 @@ endif()
 
 set(gui_src
 	expense_widget.cpp
+	weights_widget.cpp
 	budget_app.cpp
   )
 

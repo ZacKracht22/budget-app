@@ -6,6 +6,7 @@
 #include <QGroupBox>
 
 #include "expense_widget.hpp"
+#include "weights_widget.hpp"
 #include "budget.hpp"
 
 
@@ -19,8 +20,7 @@ public:
 
 private:
 	ExpenseWidget* expense;
-
-	QGroupBox* group;
+	WeightsWidget* weights;
 };
 
 #endif
