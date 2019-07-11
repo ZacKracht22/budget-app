@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLayout>
+#include <QGroupBox>
 
 #include "expense_widget.hpp"
 #include "budget.hpp"
@@ -18,6 +19,8 @@ public:
 
 private:
 	ExpenseWidget* expense;
+
+	QGroupBox* group;
 };
 
 #endif

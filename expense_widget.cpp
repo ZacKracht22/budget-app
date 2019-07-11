@@ -1,6 +1,7 @@
 #include "expense_widget.hpp"
 #include <iomanip>
 #include <sstream>
+#include <QDebug>
 
 ExpenseWidget::ExpenseWidget() {
 	//Create widget layout for buttons edit, delete, and reset
@@ -76,6 +77,7 @@ ExpenseWidget::ExpenseWidget() {
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addExpense()));
 	QObject::connect(b_delete, SIGNAL(clicked()), this, SLOT(deleteItem()));
 	QObject::connect(b_reset, SIGNAL(clicked()), itemTable, SLOT(clear()));
+	QObject::connect(b_edit, SIGNAL(clicked()), this, SLOT(editEntry()));
 	QObject::connect(itemTable, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
 }
 
@@ -96,7 +98,7 @@ void ExpenseWidget::addExpense() {
 	std::string s = stream.str();
 	QString expence_description = description->text();
 
-	QString item_to_add = QString::fromStdString(s) + QString::fromStdString("\t") + expence_description;
+	QString item_to_add = QString::fromStdString("$" + s + "\t") + expence_description;
 	itemTable->addItem(item_to_add);
 }
 
@@ -107,4 +109,20 @@ void ExpenseWidget::activateButtons() {
 
 void ExpenseWidget::deleteItem() {
 	itemTable->takeItem(itemTable->currentRow());
+}
+
+void ExpenseWidget::editEntry() {
+	QListWidgetItem* item = itemTable->takeItem(itemTable->currentRow());
+	QString s = item->text();
+	std::string expenseString = s.toStdString();
+
+	std::string costString = expenseString.substr(0, expenseString.find("\t"));
+	costString = costString.substr(1, costString.length()); //remove '$'
+	qDebug() << "string: " << QString::fromStdString(costString);
+	double costValue = atof(costString.c_str());
+	qDebug() << "value: " << costValue;
+	cost->setValue(costValue);
+
+	std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
+	description->setText(QString::fromStdString(descriptionString));
 }

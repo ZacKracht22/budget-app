@@ -23,6 +23,7 @@ public slots:
 	void addExpense();
 	void activateButtons();
 	void deleteItem();
+	void editEntry();
 	
 private:
 	QPushButton* b_edit;
