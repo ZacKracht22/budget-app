@@ -24,7 +24,7 @@ public:
 	Budget(double income);
 
 	//constructor with initial income, expenses, and weights
-	Budget(double income, std::map<std::string, double> expenses, std::map<std::string, double> weights);
+	Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights);
 	
 	//copy constructor
 	Budget(const Budget& x);
@@ -46,6 +46,12 @@ public:
 	//get the associated cost by the name of an item
 	double getExpense(std::string name);
 	
+	//get the map of weights
+	std::map<std::string, double> getWeights();
+
+	//get the map of expenses
+	std::map<std::string, double> getExpenses();
+
 	//get the associated weight by the name of an item
 	double getWeight(std::string name);
 	

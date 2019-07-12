@@ -20,13 +20,16 @@ public:
 	~BudgetApp();
 
 public slots:
+	void createBudget();
 
 private:
-	ExpenseWidget* expense;
-	WeightsWidget* weights;
-	IncomeWidget* income;
+	ExpenseWidget* expenseWidget;
+	WeightsWidget* weightsWidget;
+	IncomeWidget* incomeWidget;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
+
+	Budget* budget;
 };
 
 #endif

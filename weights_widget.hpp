@@ -17,6 +17,7 @@ class WeightsWidget : public QWidget {
 public:
 	WeightsWidget();
 	~WeightsWidget();
+	std::map<std::string, double> getWeights();
 
 public slots:
 	void clearEntry();

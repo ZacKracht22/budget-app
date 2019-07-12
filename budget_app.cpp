@@ -1,24 +1,26 @@
 #include "budget_app.hpp"
+#include <QDebug>
+#include <iostream>
 
 BudgetApp::BudgetApp() {
-	expense = new ExpenseWidget();
-	weights = new WeightsWidget();
-	income = new IncomeWidget();
+	expenseWidget = new ExpenseWidget();
+	weightsWidget = new WeightsWidget();
+	incomeWidget = new IncomeWidget();
 	b_create = new QPushButton("Create");
 	b_cancel = new QPushButton("Cancel");
 
 	QGridLayout *layout1 = new QGridLayout;
-	layout1->addWidget(expense, 0, 0);
+	layout1->addWidget(expenseWidget, 0, 0);
 	QGroupBox* group1 = new QGroupBox("Manage Expenses");
 	group1->setLayout(layout1);
 
 	QGridLayout *layout2 = new QGridLayout;
-	layout2->addWidget(weights, 0, 0);
+	layout2->addWidget(weightsWidget, 0, 0);
 	QGroupBox* group2 = new QGroupBox("Manage Percentages Of Leftover Income");
 	group2->setLayout(layout2);
 
 	QGridLayout *layout3 = new QGridLayout;
-	layout3->addWidget(income, 0, 0);
+	layout3->addWidget(incomeWidget, 0, 0);
 	QGroupBox* group3 = new QGroupBox("Record Income");
 	group3->setLayout(layout3);
 
@@ -42,9 +44,28 @@ BudgetApp::BudgetApp() {
 	setLayout(v);
 
 	QObject::connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
+	QObject::connect(b_create, SIGNAL(clicked()), this, SLOT(createBudget()));
+
 }
 
 BudgetApp::~BudgetApp() {
 
+}
+
+void BudgetApp::createBudget() {
+	double income = incomeWidget->getIncome();
+	std::map<std::string, double> weights = weightsWidget->getWeights();
+	std::map<std::string, double> expenses = expenseWidget->getExpenses();
+	budget = new Budget(income, expenses, weights);
+	std::cout << "New Budget:\n";
+	std::cout << "Income : " << budget->getIncome() << "\n";
+	std::cout << "Expenses:\n";
+	for (auto &a : expenses) {
+		std::cout << "\t" << a.first << ": " << a.second << "\n";
+	}
+	std::cout << "Weights:\n";
+	for (auto &b : weights) {
+		std::cout << "\t" << b.first << ": " << b.second << "\n";
+	}
 }
 

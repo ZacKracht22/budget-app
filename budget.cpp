@@ -14,7 +14,7 @@ Budget::Budget(double income){
 	m_totalWeight = 0;
 }
 
-Budget::Budget(double income, std::map<std::string, double> expenses, std::map<std::string, double> weights) {
+Budget::Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights) {
 	m_monthlyIncome = income;
 	m_expenses = expenses;
 	m_weights = weights;
@@ -100,6 +100,14 @@ double Budget::getWeight(std::string name){
 		throw std::range_error("Error: Name does not exist within budget");
 	}
 	return retVal;
+}
+
+std::map<std::string, double>  Budget::getWeights() {
+	return m_weights;
+}
+
+std::map<std::string, double>  Budget::getExpenses() {
+	return m_expenses;
 }
 
 double Budget::getIncome(){

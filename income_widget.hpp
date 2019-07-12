@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QLayout>
+#include <QDoubleSpinBox>
+
 
 #include "budget.hpp"
 
@@ -12,11 +14,13 @@ class IncomeWidget : public QWidget {
 public:
 	IncomeWidget();
 	~IncomeWidget();
+	double getIncome();
 
 public slots:
 	
 
 private:
+	QDoubleSpinBox* incomeBox;
 	
 };
 

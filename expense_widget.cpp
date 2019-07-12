@@ -124,3 +124,20 @@ void ExpenseWidget::editEntry() {
 	std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
 	description->setText(QString::fromStdString(descriptionString));
 }
+
+std::map<std::string, double> ExpenseWidget::getExpenses() {
+	std::map<std::string, double> retMap;
+	int count = itemTable->count();
+	for (int i = 0; i < count; i++) {
+		QListWidgetItem* item = itemTable->item(i);
+		QString s = item->text();
+		std::string expenseString = s.toStdString();
+		std::string costString = expenseString.substr(0, expenseString.find("\t"));
+		costString = costString.substr(1, costString.length()); //remove '$'
+
+		double costValue = atof(costString.c_str());
+		std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
+		retMap[descriptionString] = costValue;
+	}
+	return retMap;
+}

@@ -124,3 +124,19 @@ void WeightsWidget::editEntry() {
 	std::string descriptionString = weightString.substr(weightString.find("\t") + 1, weightString.length());
 	description->setText(QString::fromStdString(descriptionString));
 }
+
+std::map<std::string, double> WeightsWidget::getWeights() {
+	std::map<std::string, double> retMap;
+	int count = itemTable->count();
+	for (int i = 0; i < count; i++) {
+		QListWidgetItem* item = itemTable->item(i);
+		QString s = item->text();
+		std::string weightString = s.toStdString();
+		std::string w = weightString.substr(0, weightString.find("%"));
+
+		double weightValue = atof(w.c_str());
+		std::string descriptionString = weightString.substr(weightString.find("\t") + 1, weightString.length());
+		retMap[descriptionString] = weightValue;
+	}
+	return retMap;
+}

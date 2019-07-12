@@ -18,6 +18,7 @@ if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
 endif()
 
 set(gui_src
+	budget.cpp
 	expense_widget.cpp
 	weights_widget.cpp
 	income_widget.cpp

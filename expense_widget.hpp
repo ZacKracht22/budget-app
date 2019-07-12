@@ -17,6 +17,7 @@ class ExpenseWidget : public QWidget {
 public:
 	ExpenseWidget();
 	~ExpenseWidget();
+	std::map<std::string, double> getExpenses();
 
 public slots:
 	void clearEntry();
