@@ -69,15 +69,20 @@ public:
 	void removeWeight();
 
 	std::map<std::string, double> weightsToValues();
+
+	void print(std::ostream & out);
 	
 
 private:
 	std::map<std::string, double> m_expenses;
 	std::map<std::string, double> m_weights;
 	
-	double m_monthlyIncome;
+	double m_income;
 	double m_remaining;
 	double m_totalWeight;
 };
+
+/// Render expression to output stream
+std::ostream & operator<<(std::ostream & out, const Budget & exp);
 
 #endif

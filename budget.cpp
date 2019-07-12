@@ -9,13 +9,13 @@ Description: Implementation of Budget class to be used in the budget_app
 #include <stdexcept>
 
 Budget::Budget(double income){
-	m_monthlyIncome = income;
+	m_income = income;
 	m_remaining = income;
 	m_totalWeight = 0;
 }
 
 Budget::Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights) {
-	m_monthlyIncome = income;
+	m_income = income;
 	m_expenses = expenses;
 	m_weights = weights;
 
@@ -35,7 +35,7 @@ Budget::Budget(double income, const std::map<std::string, double>& expenses, con
 Budget::Budget(const Budget& x){
 	m_expenses = x.m_expenses;
 	m_weights = x.m_weights;
-	m_monthlyIncome = x.m_monthlyIncome;
+	m_income = x.m_income;
 	m_remaining = x.m_remaining;
 	m_totalWeight = x.m_totalWeight;
 }
@@ -49,7 +49,7 @@ Budget& Budget::operator=(const Budget& x){
 	if (this != &x) {
 		m_expenses = x.m_expenses;
 		m_weights = x.m_weights;
-		m_monthlyIncome = x.m_monthlyIncome;
+		m_income = x.m_income;
 		m_remaining = x.m_remaining;
 		m_totalWeight = x.m_totalWeight;
 	}
@@ -57,7 +57,7 @@ Budget& Budget::operator=(const Budget& x){
 }
 
 void Budget::addIncome(double amount) {
-	m_monthlyIncome += amount;
+	m_income += amount;
 	m_remaining += amount;
 }
 
@@ -111,7 +111,7 @@ std::map<std::string, double>  Budget::getExpenses() {
 }
 
 double Budget::getIncome(){
-	return m_monthlyIncome;
+	return m_income;
 }
 
 double Budget::getRemaining(){
@@ -132,4 +132,17 @@ void Budget::removeWeight(){
 
 std::map<std::string, double> Budget::weightsToValues() {
 	return std::map<std::string, double>();
+}
+
+void Budget::print(std::ostream & out) {
+	out << "New Budget:\n";
+	out << "Income : " << m_income << "\n";
+	out << "Expenses:\n";
+	for (auto &a : m_expenses) {
+		out << "\t" << a.first << ": " << a.second << "\n";
+	}
+	out << "Weights:\n";
+	for (auto &b : m_weights) {
+		out << "\t" << b.first << ": " << b.second << "\n";
+	}
 }

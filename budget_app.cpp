@@ -57,15 +57,7 @@ void BudgetApp::createBudget() {
 	std::map<std::string, double> weights = weightsWidget->getWeights();
 	std::map<std::string, double> expenses = expenseWidget->getExpenses();
 	budget = new Budget(income, expenses, weights);
-	std::cout << "New Budget:\n";
-	std::cout << "Income : " << budget->getIncome() << "\n";
-	std::cout << "Expenses:\n";
-	for (auto &a : expenses) {
-		std::cout << "\t" << a.first << ": " << a.second << "\n";
-	}
-	std::cout << "Weights:\n";
-	for (auto &b : weights) {
-		std::cout << "\t" << b.first << ": " << b.second << "\n";
-	}
+
+	budget->print(std::cout);
 }
 
