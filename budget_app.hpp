@@ -8,6 +8,7 @@
 
 #include "expense_widget.hpp"
 #include "weights_widget.hpp"
+#include "income_widget.hpp"
 #include "budget.hpp"
 
 
@@ -18,10 +19,12 @@ public:
 	BudgetApp();
 	~BudgetApp();
 
+public slots:
 
 private:
 	ExpenseWidget* expense;
 	WeightsWidget* weights;
+	IncomeWidget* income;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
 };
