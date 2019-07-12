@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLayout>
 #include <QGroupBox>
+#include <QPushButton>
 
 #include "expense_widget.hpp"
 #include "weights_widget.hpp"
@@ -21,6 +22,8 @@ public:
 private:
 	ExpenseWidget* expense;
 	WeightsWidget* weights;
+	QPushButton* b_create;
+	QPushButton* b_cancel;
 };
 
 #endif
