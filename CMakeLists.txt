@@ -22,7 +22,7 @@ set(gui_src
 	expense_widget.cpp
 	weights_widget.cpp
 	income_widget.cpp
-	budget_app.cpp
+	budget_creator.cpp
   )
 
 # main entry point for GUI interface

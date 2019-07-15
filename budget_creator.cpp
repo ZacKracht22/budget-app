@@ -1,8 +1,8 @@
-#include "budget_app.hpp"
+#include "budget_creator.hpp"
 #include <QDebug>
 #include <iostream>
 
-BudgetApp::BudgetApp() {
+BudgetCreator::BudgetCreator() {
 	expenseWidget = new ExpenseWidget();
 	weightsWidget = new WeightsWidget();
 	incomeWidget = new IncomeWidget();
@@ -48,16 +48,16 @@ BudgetApp::BudgetApp() {
 
 }
 
-BudgetApp::~BudgetApp() {
+BudgetCreator::~BudgetCreator() {
 
 }
 
-void BudgetApp::createBudget() {
+void BudgetCreator::createBudget() {
 	double income = incomeWidget->getIncome();
 	std::map<std::string, double> weights = weightsWidget->getWeights();
 	std::map<std::string, double> expenses = expenseWidget->getExpenses();
-	budget = new Budget(income, expenses, weights);
+	Budget budget(income, expenses, weights);
 
-	budget->print(std::cout);
+	budget.print(std::cout);
 }
 

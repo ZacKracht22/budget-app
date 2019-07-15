@@ -1,13 +1,13 @@
 #include <QApplication>
-#include "budget_app.hpp"
+#include "budget_creator.hpp"
 
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 
-	BudgetApp budApp;
+	BudgetCreator bc;
 
-	budApp.show();
+	bc.show();
 
 	return app.exec();
 }

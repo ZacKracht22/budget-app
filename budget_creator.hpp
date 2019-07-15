@@ -1,5 +1,5 @@
-#ifndef BUDGET_APP_HPP
-#define BUDGET_APP_HPP
+#ifndef BUDGET_CREATOR_HPP
+#define BUDGET_CREATOR_HPP
 
 #include <QWidget>
 #include <QLayout>
@@ -12,12 +12,12 @@
 #include "budget.hpp"
 
 
-class BudgetApp : public QWidget {
+class BudgetCreator : public QWidget {
 	Q_OBJECT
 
 public:
-	BudgetApp();
-	~BudgetApp();
+	BudgetCreator();
+	~BudgetCreator();
 
 public slots:
 	void createBudget();
@@ -28,8 +28,6 @@ private:
 	IncomeWidget* incomeWidget;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
-
-	Budget* budget;
 };
 
 #endif

@@ -2,7 +2,7 @@
 Filename: budget.hpp
 Author: Zac Kracht
 Date: 7/8/2019
-Description: Header file containing interface for a monthly budget
+Description: Header file containing interface for a budget than can be created and edited
 */
 
 #ifndef _BUDGET_HPP_
@@ -35,42 +35,53 @@ public:
 	//copy assignment
 	Budget& operator=(const Budget& x);
 
-	void addIncome(double amount);
+	// inequality comparison for two budgets, needed for = operator
+	friend bool operator!=(const Budget & left, const Budget & right) noexcept;
+
+	// equality comparison for two budgets
+	friend bool operator==(const Budget & left, const Budget & right) noexcept;
+
+	//Add amount to the income value
+	void addIncome(double amount) noexcept;
 	
-	//add an expense with cost to the budget
+	//add an expense with cost and name to the budget
 	void addExpense(std::string name, double cost);
 	
 	//add a weight of remaining income to the budget
-	void addWeight(std::string name, double weight);
+	void addWeight(std::string name, double weight) noexcept;
 	
 	//get the associated cost by the name of an item
-	double getExpense(std::string name);
-	
-	//get the map of weights
-	std::map<std::string, double> getWeights();
-
-	//get the map of expenses
-	std::map<std::string, double> getExpenses();
+	double getExpense(std::string name) const;
 
 	//get the associated weight by the name of an item
-	double getWeight(std::string name);
+	double getWeight(std::string name) const;
+
+	//get the map of weights
+	std::map<std::string, double> getWeights() const noexcept;
+
+	//get the map of expenses
+	std::map<std::string, double> getExpenses() const noexcept;
 	
 	//getter function for income variable
-	double getIncome();
+	double getIncome() const noexcept;
 	
 	//getter function for remaining variable
-	double getRemaining();
+	double getRemaining() const noexcept;
 
 	//getter function for total weights
-	double getTotalWeight();
+	double getTotalWeight() const noexcept;
 	
-	void removeExpense();
+	//remove an expense with name from the map of expenses
+	void removeExpense(std::string name);
 	
-	void removeWeight();
+	//remove weight with name from the map of weights
+	void removeWeight(std::string name);
 
-	std::map<std::string, double> weightsToValues();
-
-	void print(std::ostream & out);
+	//convert all the weights to monetary values based on remaining income, return as a map from name to value
+	std::map<std::string, double> weightsToValues() noexcept;
+	
+	//printing function to visualize/debug budget
+	void print(std::ostream & out) noexcept;
 	
 
 private:
@@ -82,7 +93,5 @@ private:
 	double m_totalWeight;
 };
 
-/// Render expression to output stream
-std::ostream & operator<<(std::ostream & out, const Budget & exp);
 
 #endif
