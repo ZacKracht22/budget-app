@@ -8,6 +8,10 @@ Description: Implementation of Budget class for creating and editing a budget
 #include "budget.hpp"
 #include <stdexcept>
 
+Budget::Budget() {
+	Budget(0);
+}
+
 Budget::Budget(double income){
 	m_income = income;
 	m_remaining = income;

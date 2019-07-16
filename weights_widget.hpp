@@ -15,7 +15,7 @@ class WeightsWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	WeightsWidget();
+	WeightsWidget(const Budget& b);
 	~WeightsWidget();
 	std::map<std::string, double> getWeights();
 

@@ -2,10 +2,12 @@
 #include <QDebug>
 #include <iostream>
 
-BudgetCreator::BudgetCreator() {
-	expenseWidget = new ExpenseWidget();
-	weightsWidget = new WeightsWidget();
-	incomeWidget = new IncomeWidget();
+BudgetCreator::BudgetCreator(const Budget& b) {
+	budget = b;
+
+	expenseWidget = new ExpenseWidget(budget);
+	weightsWidget = new WeightsWidget(budget);
+	incomeWidget = new IncomeWidget(budget);
 	b_create = new QPushButton("Create");
 	b_cancel = new QPushButton("Cancel");
 
@@ -56,7 +58,15 @@ void BudgetCreator::createBudget() {
 	double income = incomeWidget->getIncome();
 	std::map<std::string, double> weights = weightsWidget->getWeights();
 	std::map<std::string, double> expenses = expenseWidget->getExpenses();
-	Budget budget(income, expenses, weights);
+	budget = Budget(income);
+
+	for (auto &expense : expenses) {
+		budget.addExpense(expense.first, expense.second);
+	}
+
+	for (auto &weight : weights) {
+		budget.addWeight(weight.first, weight.second);
+	}
 
 	budget.print(std::cout);
 }

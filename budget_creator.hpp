@@ -16,7 +16,7 @@ class BudgetCreator : public QWidget {
 	Q_OBJECT
 
 public:
-	BudgetCreator();
+	BudgetCreator(const Budget& b);
 	~BudgetCreator();
 
 public slots:
@@ -28,6 +28,8 @@ private:
 	IncomeWidget* incomeWidget;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
+
+	Budget budget;
 };
 
 #endif

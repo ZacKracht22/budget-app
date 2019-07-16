@@ -12,7 +12,7 @@ class IncomeWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	IncomeWidget();
+	IncomeWidget(const Budget& b);
 	~IncomeWidget();
 	double getIncome();
 

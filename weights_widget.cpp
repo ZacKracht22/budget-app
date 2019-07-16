@@ -4,7 +4,7 @@
 #include <QDebug>
 
 
-WeightsWidget::WeightsWidget() {
+WeightsWidget::WeightsWidget(const Budget& b) {
 	//Create widget layout for buttons edit, delete, and reset
 	b_edit = new QPushButton("Edit");
 	b_edit->setEnabled(false);
@@ -73,6 +73,17 @@ WeightsWidget::WeightsWidget() {
 	layout_overall->addWidget(bottom);
 
 	setLayout(layout_overall);
+
+	for (auto &a : b.getWeights()) {
+		std::string name = a.first;
+		double w = a.second;
+
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << w;
+		std::string s = stream.str();
+		QString item_to_add = QString::fromStdString(s + "%" + "\t" + name);
+		itemTable->addItem(item_to_add);
+	}
 
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addWeight()));

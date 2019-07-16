@@ -3,7 +3,7 @@
 #include <sstream>
 #include <QDebug>
 
-ExpenseWidget::ExpenseWidget() {
+ExpenseWidget::ExpenseWidget(const Budget& b) {
 	//Create widget layout for buttons edit, delete, and reset
 	b_edit = new QPushButton("Edit");
 	b_edit->setEnabled(false);
@@ -72,6 +72,17 @@ ExpenseWidget::ExpenseWidget() {
 	layout_overall->addWidget(bottom);
 
 	setLayout(layout_overall);
+
+	for (auto &a : b.getExpenses()) {
+		std::string name = a.first;
+		double c = a.second;
+		
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << c;
+		std::string s = stream.str();
+		QString item_to_add = QString::fromStdString("$" + s + "\t" + name);
+		itemTable->addItem(item_to_add);
+	}
 
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addExpense()));

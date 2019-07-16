@@ -21,7 +21,7 @@ class Budget
 {
 public:
 	///default constructor
-	Budget() {};
+	Budget();
 
 	///constructor with initial income
 	Budget(double income);

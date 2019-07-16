@@ -15,7 +15,7 @@ class ExpenseWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	ExpenseWidget();
+	ExpenseWidget(const Budget& b);
 	~ExpenseWidget();
 	std::map<std::string, double> getExpenses();
 

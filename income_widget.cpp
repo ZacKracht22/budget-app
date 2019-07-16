@@ -3,13 +3,14 @@
 #include <QLabel>
 
 
-IncomeWidget::IncomeWidget() {
+IncomeWidget::IncomeWidget(const Budget& b) {
 	incomeBox = new QDoubleSpinBox();
 	incomeBox->setMinimum(0.0);
 	incomeBox->setSingleStep(100);
 	incomeBox->setDecimals(2);
 	incomeBox->setMaximum(1000000);
 	incomeBox->setPrefix("$");
+	incomeBox->setValue(b.getIncome());
 
 	QLabel* label = new QLabel("Enter your income:");
 	QVBoxLayout* v = new QVBoxLayout;
