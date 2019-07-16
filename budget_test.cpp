@@ -6,6 +6,7 @@ Description: Unit testing file for Budget class using Qt's QTest framework
 */
 
 #include <QTest>
+#include <QDebug>
 #include "budget.hpp"
 
 class BudgetTest : public QObject {
@@ -22,6 +23,9 @@ class BudgetTest : public QObject {
 		void AddWeightsTest();
 		void GetExpenseTest();
 		void GetWeightTest();
+		void RemoveExpenseTest();
+		void RemoveWeightTest();
+		void WeightsToValuesTest();
 	private:
 		Budget test_a;
 		Budget test_b;
@@ -122,6 +126,31 @@ void BudgetTest::GetWeightTest() {
 	QVERIFY(test_b.getWeight("clothes") == 10.0);
 	QVERIFY(test_b.getWeight("savings") == 65.0);
 	QVERIFY_EXCEPTION_THROWN(test_b.getWeight("bad"), std::range_error);
+}
+
+void BudgetTest::RemoveExpenseTest() {
+	test_b.removeExpense("spotify");
+	QVERIFY(test_b.getRemaining() == 574.5);
+	QVERIFY_EXCEPTION_THROWN(test_b.getExpense("spotify"), std::range_error);
+	QVERIFY_EXCEPTION_THROWN(test_b.removeExpense("bad"), std::range_error);
+
+}
+
+void BudgetTest::RemoveWeightTest() {
+	test_b.removeWeight("food");
+	QVERIFY(test_b.getTotalWeight() == 75.0);
+	QVERIFY_EXCEPTION_THROWN(test_b.getWeight("food"), std::range_error);
+	QVERIFY_EXCEPTION_THROWN(test_b.removeWeight("bad"), std::range_error);
+
+}
+
+void BudgetTest::WeightsToValuesTest() {
+	std::map<std::string, double> test = test_c.weightsToValues();
+	QVERIFY(test["gym"] > 32.87 && test["gym"] < 32.88);
+	QVERIFY(test["college"] > 54.57 && test["college"] < 54.58);
+	QVERIFY(test["food"] > 164.38 && test["food"] < 164.39);
+	QVERIFY(test["clothes"] > 65.75 && test["clothes"] < 65.76);
+	QVERIFY(test["savings"] > 427.40 && test["savings"] < 427.41);
 }
 
 

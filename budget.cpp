@@ -152,6 +152,7 @@ double Budget::getTotalWeight() const noexcept {
 void Budget::removeExpense(std::string name){
 	std::map<std::string, double>::iterator it = m_expenses.find(name);
 	if (it != m_expenses.end()) {
+		m_remaining += it->second;
 		m_expenses.erase(it);
 	}
 	else {
@@ -162,6 +163,7 @@ void Budget::removeExpense(std::string name){
 void Budget::removeWeight(std::string name){
 	std::map<std::string, double>::iterator it = m_weights.find(name);
 	if (it != m_weights.end()) {
+		m_totalWeight -= it->second;
 		m_weights.erase(it);
 	}
 	else {
@@ -172,7 +174,7 @@ void Budget::removeWeight(std::string name){
 std::map<std::string, double> Budget::weightsToValues() noexcept {
 	std::map<std::string, double> retMap;
 	for (auto &w : m_weights) {
-		retMap[w.first] = w.second * m_remaining;
+		retMap[w.first] = (w.second / m_totalWeight) * m_remaining;
 	}
 	return retMap;
 }
