@@ -57,7 +57,12 @@ Weights:
 	clothing: 20%
 	sports: 20%
 ```
-* First start by setting the income to $1000.00 by hitting the [up]() arrow 10 times on the income line
+* First start by setting the income to $1000.00 by hitting the up arrow 10 times on the income line
+* Then, for each expense, enter the cost in the cost box using either the arrows or manually typing, and then write the name of the expense in the description box.
+* Press Add to add the expense to the list.
+* Repeat this process for each weight in the weights section.
+* You can edit or delete any of these items, or reset a whole list using the cooresponding buttons
+* Press Create when you are ready to create your budget
 
 ### Running Unit Tests
 To run the unit tests executable for the Budget Class, type the following command
