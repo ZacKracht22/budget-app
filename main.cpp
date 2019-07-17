@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "budget_creator.hpp"
+#include "budget_view.hpp"
 #include "budget.hpp"
 
 //Main function that gets executed when the budget_app executable is ran.
@@ -14,9 +15,9 @@ int main(int argc, char *argv[])
 	b.addExpense("c", 12.1234567);
 	b.addWeight("z", 25.0);
 	b.addWeight("y", 12.1234567);
-	BudgetCreator bc(b);
-
-	bc.show();
+	//BudgetCreator bc(b);
+	BudgetView bv(b);
+	bv.show();
 
 	return app.exec();
 }

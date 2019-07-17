@@ -16,6 +16,7 @@ if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
   set(CMAKE_AUTOMOC ON)
   set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
+find_package(Qt5Charts)
 
 set(gui_src
 	budget.cpp
@@ -23,6 +24,7 @@ set(gui_src
 	weights_widget.cpp
 	income_widget.cpp
 	budget_creator.cpp
+	budget_view.cpp
   )
 
 # main entry point for GUI interface
@@ -35,7 +37,7 @@ set(gui_main
 if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
 	# build the program
 	add_executable(budget_app ${gui_main} ${gui_src})
-	target_link_libraries(budget_app Qt5::Widgets Qt5::Test)
+	target_link_libraries(budget_app Qt5::Widgets Qt5::Charts Qt5::Test)
 
 	add_executable(unit_tests budget.cpp budget.hpp budget_test.cpp)
 	target_link_libraries(unit_tests Qt5::Widgets Qt5::Test)
