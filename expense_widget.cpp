@@ -1,10 +1,17 @@
+/**
+Filename: expense_widget.cpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Implementation of functions for ExpenseWidget class (declared in expense_widget.hpp)
+*/
+
 #include "expense_widget.hpp"
 #include <iomanip>
 #include <sstream>
 #include <QDebug>
 
-ExpenseWidget::ExpenseWidget(const Budget& b) {
-	//Create widget layout for buttons edit, delete, and reset
+//Private helper method to create the layout for the entire widget
+QVBoxLayout* ExpenseWidget::createLayout() {
 	b_edit = new QPushButton("Edit");
 	b_edit->setEnabled(false);
 	b_delete = new QPushButton("Delete");
@@ -18,10 +25,10 @@ ExpenseWidget::ExpenseWidget(const Budget& b) {
 	buttons1->setLayout(b_layout);
 
 	QLabel* l_table = new QLabel("Expenses");
-	itemTable = new QListWidget();
+	itemList = new QListWidget();
 	QVBoxLayout* t_layout = new QVBoxLayout();
 	t_layout->addWidget(l_table);
-	t_layout->addWidget(itemTable);
+	t_layout->addWidget(itemList);
 	QWidget* table_widget = new QWidget();
 	table_widget->setLayout(t_layout);
 
@@ -71,8 +78,15 @@ ExpenseWidget::ExpenseWidget(const Budget& b) {
 	layout_overall->addWidget(middle);
 	layout_overall->addWidget(bottom);
 
-	setLayout(layout_overall);
+	return layout_overall;
+}
 
+///Constructor to set the layout and add all the input budget's expenses onto the list view
+ExpenseWidget::ExpenseWidget(const Budget& b) {
+	QVBoxLayout* layout = createLayout();
+	setLayout(layout);
+
+	//Add each expense item into the item list
 	for (auto &a : b.getExpenses()) {
 		std::string name = a.first;
 		double c = a.second;
@@ -81,26 +95,29 @@ ExpenseWidget::ExpenseWidget(const Budget& b) {
 		stream << std::fixed << std::setprecision(2) << c;
 		std::string s = stream.str();
 		QString item_to_add = QString::fromStdString("$" + s + "\t" + name);
-		itemTable->addItem(item_to_add);
+		itemList->addItem(item_to_add);
 	}
 
+	//Connect signals of buttons to slot functions
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addExpense()));
 	QObject::connect(b_delete, SIGNAL(clicked()), this, SLOT(deleteItem()));
-	QObject::connect(b_reset, SIGNAL(clicked()), itemTable, SLOT(clear()));
+	QObject::connect(b_reset, SIGNAL(clicked()), itemList, SLOT(clear()));
 	QObject::connect(b_edit, SIGNAL(clicked()), this, SLOT(editEntry()));
-	QObject::connect(itemTable, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
+	QObject::connect(itemList, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
 }
 
 ExpenseWidget::~ExpenseWidget() {
 
 }
 
+///Slot function to reset the input fields
 void ExpenseWidget::clearEntry() {
 	cost->setValue(0.0);
 	description->clear();
 }
 
+///Slot function for adding a new expense item onto the list in the fromat "$cost	description"
 void ExpenseWidget::addExpense() {
 	double expense_cost = cost->value();
 
@@ -110,20 +127,23 @@ void ExpenseWidget::addExpense() {
 	QString expence_description = description->text();
 
 	QString item_to_add = QString::fromStdString("$" + s + "\t") + expence_description;
-	itemTable->addItem(item_to_add);
+	itemList->addItem(item_to_add);
 }
 
+///Slot to activate buttons once an item has been selected in the item list
 void ExpenseWidget::activateButtons() {
 	b_edit->setEnabled(true);
 	b_delete->setEnabled(true);
 }
 
+///Slot function to remove an item from the list
 void ExpenseWidget::deleteItem() {
-	itemTable->takeItem(itemTable->currentRow());
+	itemList->takeItem(itemList->currentRow());
 }
 
+///Slot function to remove an item from the list and place it into the input fields for editing
 void ExpenseWidget::editEntry() {
-	QListWidgetItem* item = itemTable->takeItem(itemTable->currentRow());
+	QListWidgetItem* item = itemList->takeItem(itemList->currentRow());
 	QString s = item->text();
 	std::string expenseString = s.toStdString();
 
@@ -136,11 +156,12 @@ void ExpenseWidget::editEntry() {
 	description->setText(QString::fromStdString(descriptionString));
 }
 
+///Creates a map of all the expenses listed to be used for instance of new budget
 std::map<std::string, double> ExpenseWidget::getExpenses() {
 	std::map<std::string, double> retMap;
-	int count = itemTable->count();
+	int count = itemList->count();
 	for (int i = 0; i < count; i++) {
-		QListWidgetItem* item = itemTable->item(i);
+		QListWidgetItem* item = itemList->item(i);
 		QString s = item->text();
 		std::string expenseString = s.toStdString();
 		std::string costString = expenseString.substr(0, expenseString.find("\t"));

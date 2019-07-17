@@ -2,6 +2,8 @@
 #include "budget_creator.hpp"
 #include "budget.hpp"
 
+//Main function that gets executed when the budget_app executable is ran.
+//Simply shows the BudgetCreator with a given input budget and runs the event control loop.
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);

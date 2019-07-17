@@ -1,11 +1,17 @@
+/**
+Filename: weights_widget.cpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Implementation of functions for WeightsWidget class (declared in weights_widget.hpp)
+*/
+
 #include "weights_widget.hpp"
 #include <iomanip>
 #include <sstream>
 #include <QDebug>
 
-
-WeightsWidget::WeightsWidget(const Budget& b) {
-	//Create widget layout for buttons edit, delete, and reset
+///Helper function for creating the layout of the widget
+QVBoxLayout* WeightsWidget::createLayout() {
 	b_edit = new QPushButton("Edit");
 	b_edit->setEnabled(false);
 	b_delete = new QPushButton("Delete");
@@ -19,10 +25,10 @@ WeightsWidget::WeightsWidget(const Budget& b) {
 	buttons1->setLayout(b_layout);
 
 	QLabel* l_table = new QLabel("Weights");
-	itemTable = new QListWidget();
+	itemList = new QListWidget();
 	QVBoxLayout* t_layout = new QVBoxLayout();
 	t_layout->addWidget(l_table);
-	t_layout->addWidget(itemTable);
+	t_layout->addWidget(itemList);
 	QWidget* table_widget = new QWidget();
 	table_widget->setLayout(t_layout);
 
@@ -72,7 +78,13 @@ WeightsWidget::WeightsWidget(const Budget& b) {
 	layout_overall->addWidget(middle);
 	layout_overall->addWidget(bottom);
 
-	setLayout(layout_overall);
+	return layout_overall;
+}
+
+///Constructor to set the layout, add the weight items to the item list, and connect the button signals to slot functions
+WeightsWidget::WeightsWidget(const Budget& b) {
+	QVBoxLayout* layout = createLayout();
+	setLayout(layout);
 
 	for (auto &a : b.getWeights()) {
 		std::string name = a.first;
@@ -82,15 +94,15 @@ WeightsWidget::WeightsWidget(const Budget& b) {
 		stream << std::fixed << std::setprecision(2) << w;
 		std::string s = stream.str();
 		QString item_to_add = QString::fromStdString(s + "%" + "\t" + name);
-		itemTable->addItem(item_to_add);
+		itemList->addItem(item_to_add);
 	}
 
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(addWeight()));
 	QObject::connect(b_delete, SIGNAL(clicked()), this, SLOT(deleteItem()));
-	QObject::connect(b_reset, SIGNAL(clicked()), itemTable, SLOT(clear()));
+	QObject::connect(b_reset, SIGNAL(clicked()), itemList, SLOT(clear()));
 	QObject::connect(b_edit, SIGNAL(clicked()), this, SLOT(editEntry()));
-	QObject::connect(itemTable, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
+	QObject::connect(itemList, SIGNAL(itemSelectionChanged()), this, SLOT(activateButtons()));
 }
 
 WeightsWidget::~WeightsWidget() {
@@ -102,6 +114,7 @@ void WeightsWidget::clearEntry() {
 	description->clear();
 }
 
+///Slot function for adding a weight item to the list in the format: "weight%	description"
 void WeightsWidget::addWeight() {
 	double weight_value = weight->value();
 
@@ -111,20 +124,23 @@ void WeightsWidget::addWeight() {
 	QString weight_description = description->text();
 
 	QString item_to_add = QString::fromStdString(s + "%" + "\t") + weight_description;
-	itemTable->addItem(item_to_add);
+	itemList->addItem(item_to_add);
 }
 
+///Slot function for activating the buttons once an item has been selected
 void WeightsWidget::activateButtons() {
 	b_edit->setEnabled(true);
 	b_delete->setEnabled(true);
 }
 
+///Slot function for removing an item from the list
 void WeightsWidget::deleteItem() {
-	itemTable->takeItem(itemTable->currentRow());
+	itemList->takeItem(itemList->currentRow());
 }
 
+///Slot function for editing an entry by removing it from the item list and emplacing it into the input boxes
 void WeightsWidget::editEntry() {
-	QListWidgetItem* item = itemTable->takeItem(itemTable->currentRow());
+	QListWidgetItem* item = itemList->takeItem(itemList->currentRow());
 	QString s = item->text();
 	std::string weightString = s.toStdString();
 
@@ -136,11 +152,12 @@ void WeightsWidget::editEntry() {
 	description->setText(QString::fromStdString(descriptionString));
 }
 
+///Function to create a map of all the weight items listed by the item list
 std::map<std::string, double> WeightsWidget::getWeights() {
 	std::map<std::string, double> retMap;
-	int count = itemTable->count();
+	int count = itemList->count();
 	for (int i = 0; i < count; i++) {
-		QListWidgetItem* item = itemTable->item(i);
+		QListWidgetItem* item = itemList->item(i);
 		QString s = item->text();
 		std::string weightString = s.toStdString();
 		std::string w = weightString.substr(0, weightString.find("%"));

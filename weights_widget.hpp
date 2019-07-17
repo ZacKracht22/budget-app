@@ -1,3 +1,11 @@
+/**
+Filename: weights_widget.hpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Declaration of the WeightsWidget class. WeightsWidget allows a user to add, edit, and delete weight items
+onto a QList for viewing purposes. Weight items are input using a QDoubleSpinBox for the cost and a QLineEdit for the name.
+*/
+
 #ifndef WEIGHTS_WIDGET_HPP
 #define WEIGHTS_WIDGET_HPP
 
@@ -34,7 +42,9 @@ private:
 	QPushButton* b_clear;
 	QDoubleSpinBox* weight;
 	QLineEdit* description;
-	QListWidget* itemTable;
+	QListWidget* itemList;
+
+	QVBoxLayout* createLayout();
 };
 
 #endif

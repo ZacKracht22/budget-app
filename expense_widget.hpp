@@ -1,3 +1,11 @@
+/**
+Filename: expense_widget.hpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Declaration of the ExpenseWidget class. ExpenseWidget allows a user to add, edit, and delete expense items
+onto a QList for viewing purposes. Expense items are input using a QDoubleSpinBox for the cost and a QLineEdit for the name.
+*/
+
 #ifndef EXPENSE_WIDGET_HPP
 #define EXPENSE_WIDGET_HPP
 
@@ -34,7 +42,9 @@ private:
 	QPushButton* b_clear;
 	QDoubleSpinBox* cost;
 	QLineEdit* description;
-	QListWidget* itemTable;
+	QListWidget* itemList;
+
+	QVBoxLayout* createLayout();
 };
 
 #endif

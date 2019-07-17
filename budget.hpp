@@ -15,77 +15,48 @@ Description: Header file containing interface for a budget than can be created a
 
 /**
 Class: Budget
-Description: Interface for creating and modifying a monthly-based budget
+Description: Interface for creating and modifying a monthly-based budget. A budget contains an income amount, and two maps for expenses and weights.
+Expenses are items where there is a flat, known, cost that can be subtracted right from the income. 
+Weights are categories of spending that come from the remainder of income once all of the expenses have been subtracting.
+For example: if there is $100 remaining after expenses in a budget, and the budget has two weights, one for "food" weighing 20, and one
+for "entertainment" weighing 15, then:
+"food" as a cost is (15/(15+20))*100
+"entertainment" as a cost is (20/(15+20))*100
 */
 class Budget
 {
 public:
-	///default constructor
+	//Constructors & desctructor
 	Budget();
-
-	///constructor with initial income
 	Budget(double income);
-
-	///constructor with initial income, expenses, and weights
 	Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights);
-	
-	///copy constructor
 	Budget(const Budget& x);
-	
-	///destructor
 	~Budget();
 	
-	///copy assignment
+	//Operators
 	Budget& operator=(const Budget& x);
-
-	/// inequality comparison for two budgets, needed for = operator
 	friend bool operator!=(const Budget & left, const Budget & right) noexcept;
-
-	/// equality comparison for two budgets
 	friend bool operator==(const Budget & left, const Budget & right) noexcept;
-
-	///Add amount to the income value
-	void addIncome(double amount) noexcept;
 	
-	///add an expense with cost and name to the budget
-	void addExpense(std::string name, double cost);
-	
-	///add a weight of remaining income to the budget
-	void addWeight(std::string name, double weight) noexcept;
-	
-	///get the associated cost by the name of an item
+	//Getter functions
 	double getExpense(std::string name) const;
-
-	///get the associated weight by the name of an item
 	double getWeight(std::string name) const;
-
-	///get the map of weights
 	std::map<std::string, double> getWeights() const noexcept;
-
-	///get the map of expenses
 	std::map<std::string, double> getExpenses() const noexcept;
-	
-	///getter function for income variable
 	double getIncome() const noexcept;
-	
-	///getter function for remaining variable
 	double getRemaining() const noexcept;
-
-	///getter function for total weights
 	double getTotalWeight() const noexcept;
-	
-	///remove an expense with name from the map of expenses
+
+	//Editing functions
+	void addIncome(double amount) noexcept;
+	void addExpense(std::string name, double cost);
+	void addWeight(std::string name, double weight) noexcept;
 	void removeExpense(std::string name);
-	
-	///remove weight with name from the map of weights
 	void removeWeight(std::string name);
 
-	///convert all the weights to monetary values based on remaining income, return as a map from name to value
+	//Visualization functions
 	std::map<std::string, double> weightsToValues() noexcept;
-	
-	///printing function to visualize/debug budget
 	void print(std::ostream & out) noexcept;
-	
 
 private:
 	std::map<std::string, double> m_expenses;

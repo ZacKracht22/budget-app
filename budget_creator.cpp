@@ -1,16 +1,16 @@
+/**
+Filename: budget_creator.cpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Implementation of functions for BudgetCreator class (declared in budget_creator.hpp)
+*/
+
 #include "budget_creator.hpp"
 #include <QDebug>
 #include <iostream>
 
-BudgetCreator::BudgetCreator(const Budget& b) {
-	budget = b;
-
-	expenseWidget = new ExpenseWidget(budget);
-	weightsWidget = new WeightsWidget(budget);
-	incomeWidget = new IncomeWidget(budget);
-	b_create = new QPushButton("Create");
-	b_cancel = new QPushButton("Cancel");
-
+///Private helper function for creating the layout of the GUI
+QVBoxLayout* BudgetCreator::createLayout() {
 	QGridLayout *layout1 = new QGridLayout;
 	layout1->addWidget(expenseWidget, 0, 0);
 	QGroupBox* group1 = new QGroupBox("Manage Expenses");
@@ -43,7 +43,21 @@ BudgetCreator::BudgetCreator(const Budget& b) {
 	v->addWidget(tools);
 	v->addWidget(buttons);
 
-	setLayout(v);
+	return v;
+}
+
+//Constructor to layout the widgets and connect the signals from the push buttons to their slots
+BudgetCreator::BudgetCreator(const Budget& b) {
+	budget = b;
+
+	expenseWidget = new ExpenseWidget(budget);
+	weightsWidget = new WeightsWidget(budget);
+	incomeWidget = new IncomeWidget(budget);
+	b_create = new QPushButton("Create");
+	b_cancel = new QPushButton("Cancel");
+
+	QVBoxLayout* layout = createLayout();
+	setLayout(layout);
 
 	QObject::connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
 	QObject::connect(b_create, SIGNAL(clicked()), this, SLOT(createBudget()));
@@ -51,9 +65,10 @@ BudgetCreator::BudgetCreator(const Budget& b) {
 }
 
 BudgetCreator::~BudgetCreator() {
-
+	//QWidgets have their own clean up operations, so delete does not need to be called on them
 }
 
+///Create a new budget based on the items listed in the GUI
 void BudgetCreator::createBudget() {
 	double income = incomeWidget->getIncome();
 	std::map<std::string, double> weights = weightsWidget->getWeights();
@@ -68,6 +83,6 @@ void BudgetCreator::createBudget() {
 		budget.addWeight(weight.first, weight.second);
 	}
 
-	budget.print(std::cout);
+	//budget.print(std::cout);
 }
 

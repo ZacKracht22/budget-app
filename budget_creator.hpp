@@ -1,3 +1,11 @@
+/**
+Filename: budget_creator.hpp
+Author: Zac Kracht
+Date: 7/17/2019
+Description: Declaration of the BudgetCreator class, a GUI for creating/editing a budget. Combines the IncomeWidget, ExpenseWidget, and WeightsWidget 
+into one tool. Create button takes the items from all 3 widgets and creates a budget object. Cancel button exits the program.
+*/
+
 #ifndef BUDGET_CREATOR_HPP
 #define BUDGET_CREATOR_HPP
 
@@ -28,8 +36,9 @@ private:
 	IncomeWidget* incomeWidget;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
-
 	Budget budget;
+
+	QVBoxLayout* createLayout();
 };
 
 #endif
