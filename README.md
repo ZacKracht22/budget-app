@@ -40,6 +40,24 @@ To run the GUI from the Budget Creator page, type the following command
 ```
 
 ### Example use
+Say you want to build a budget for each month with the following income and known expenses
+
+```
+Income: $1000.00
+Expenses:
+	car payment: $145.50
+	music streaming: $5.99
+	gas: $120.00
+	gym membership: $30.00
+```
+Then you decide you want to use the rest of your money on food, clothing, and sports, but mostly on food. That might look something like this
+```
+Weights:
+	food: 60%
+	clothing: 20%
+	sports: 20%
+```
+* First start by setting the income to $1000.00 by hitting the [up]() arrow 10 times on the income line
 
 ### Running Unit Tests
 To run the unit tests executable for the Budget Class, type the following command
