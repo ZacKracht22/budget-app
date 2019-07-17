@@ -9,23 +9,23 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 What you'll need at minimum to run the project
 
-'''
+```
 Cmake 3.5
 Qt 5.13
 C++ 11 Compiler
-'''
+```
 
 ### Cloning the Project
 
 ## Building the Project
 To build the project, get into the project directory in the command prompt and run the following commands
 
-'''
+```
 mkdir build
 cd build
 cmake ..
 cmake --build.
-'''
+```
 
 ### Running the tests
 
