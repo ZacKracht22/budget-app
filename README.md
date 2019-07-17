@@ -32,9 +32,18 @@ cmake --build.
 
 ## Usage
 
-### Running Unit Tests
-
 ### Running the GUI
+To run the GUI from the Budget Creator page, type the following command
+
+```
+./Debug/budget_app
+```
 
 ### Example use
 
+### Running Unit Tests
+To run the unit tests executable for the Budget Class, type the following command
+
+```
+./Debug/unit_tests
+```
