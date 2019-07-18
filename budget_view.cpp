@@ -21,7 +21,7 @@ BudgetView::BudgetView(const Budget& b) {
 	}
 	QChart *chart = new QChart();
 	chart->addSeries(series);
-	chart->setTitle("Example");
+	chart->setTitle(QString::fromStdString(budget.getName()));
 
 	QChartView *chartView = new QChartView(chart);
 	chartView->setRenderHint(QPainter::Antialiasing);

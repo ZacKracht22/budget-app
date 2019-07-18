@@ -44,8 +44,8 @@ void BudgetTest::initTestCase() {
 	weights["clothes"] = 10.0;
 	weights["savings"] = 65.0;
 
-	test_a = Budget(income);
-	test_b = Budget(income, expenses, weights);
+	test_a = Budget("test", income);
+	test_b = Budget("test", income, expenses, weights);
 	test_c = Budget(test_b);
 	test_d = test_c;
 }

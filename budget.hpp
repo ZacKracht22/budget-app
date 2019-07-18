@@ -28,8 +28,8 @@ class Budget
 public:
 	//Constructors & desctructor
 	Budget();
-	Budget(double income);
-	Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights);
+	Budget(std::string name, double income);
+	Budget(std::string name, double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights);
 	Budget(const Budget& x);
 	~Budget();
 	
@@ -39,6 +39,7 @@ public:
 	friend bool operator==(const Budget & left, const Budget & right) noexcept;
 	
 	//Getter functions
+	std::string getName() const noexcept;
 	double getExpense(std::string name) const;
 	double getWeight(std::string name) const;
 	std::map<std::string, double> getWeights() const noexcept;
@@ -65,6 +66,7 @@ private:
 	double m_income;
 	double m_remaining;
 	double m_totalWeight;
+	std::string m_name;
 };
 
 

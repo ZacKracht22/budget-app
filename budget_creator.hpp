@@ -13,6 +13,9 @@ into one tool. Create button takes the items from all 3 widgets and creates a bu
 #include <QLayout>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QLabel>
+
 
 #include "expense_widget.hpp"
 #include "weights_widget.hpp"
@@ -36,6 +39,7 @@ private:
 	IncomeWidget* incomeWidget;
 	QPushButton* b_create;
 	QPushButton* b_cancel;
+	QLineEdit* nameInput;
 	Budget budget;
 
 	QVBoxLayout* createLayout();

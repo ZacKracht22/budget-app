@@ -10,18 +10,20 @@ Description: Implementation of Budget class for creating and editing a budget
 
 ///default constructor
 Budget::Budget() {
-	Budget(0);
+	Budget("", 0);
 }
 
 ///constructor with initial income
-Budget::Budget(double income){
+Budget::Budget(std::string name, double income){
+	m_name = name;
 	m_income = income;
 	m_remaining = income;
 	m_totalWeight = 0;
 }
 
 ///constructor with initial income, expenses, and weights. FOR TESTING/DEBUGGING PURPOSES--NOT USED BY GUI
-Budget::Budget(double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights) {
+Budget::Budget(std::string name, double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights) {
+	m_name = name;
 	m_income = income;
 	m_expenses = expenses;
 	m_weights = weights;
@@ -42,6 +44,7 @@ Budget::Budget(double income, const std::map<std::string, double>& expenses, con
 ///copy constructor
 Budget::Budget(const Budget& x){
 	//Copy over all data from x
+	m_name = x.m_name;
 	m_expenses = x.m_expenses;
 	m_weights = x.m_weights;
 	m_income = x.m_income;
@@ -58,6 +61,7 @@ Budget::~Budget(){
 Budget& Budget::operator=(const Budget& x){
 	//Only copy over if a different budget
 	if (this != &x) {
+		m_name = x.m_name;
 		m_expenses = x.m_expenses;
 		m_weights = x.m_weights;
 		m_income = x.m_income;
@@ -75,7 +79,8 @@ bool operator!=(const Budget & left, const Budget & right) noexcept {
 /// equality comparison for two budgets
 bool operator==(const Budget & left, const Budget & right) noexcept {
 	//Compare all private variables for equality
-	if (left.getIncome() == right.getIncome() &&
+	if (left.getName() == right.getName() &&
+		left.getIncome() == right.getIncome() &&
 		left.getRemaining() == right.getRemaining() &&
 		left.getTotalWeight() == right.getTotalWeight() &&
 		left.getExpenses() == right.getExpenses() &&
@@ -108,6 +113,10 @@ void Budget::addExpense(std::string name, double cost){
 void Budget::addWeight(std::string name, double weight) noexcept {
 	m_weights[name] = weight;
 	m_totalWeight += weight;
+}
+
+std::string Budget::getName() const noexcept {
+	return m_name;
 }
 
 ///get the associated cost by the name of an item
@@ -215,7 +224,8 @@ Weights:
 */
 void Budget::print(std::ostream & out) noexcept {
 	out << "New Budget:\n";
-	out << "Income : " << m_income << "\n";
+	out << "Name: " << m_name << "\n";
+	out << "Income: " << m_income << "\n";
 	out << "Expenses:\n";
 	for (auto &a : m_expenses) {
 		out << "\t" << a.first << ": " << a.second << "\n";

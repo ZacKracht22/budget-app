@@ -6,11 +6,20 @@ Description: Implementation of functions for BudgetCreator class (declared in bu
 */
 
 #include "budget_creator.hpp"
+#include "budget_view.hpp"
 #include <QDebug>
 #include <iostream>
 
 ///Private helper function for creating the layout of the GUI
 QVBoxLayout* BudgetCreator::createLayout() {
+	QLabel* l_name = new QLabel("Name:");
+	QVBoxLayout* name_layout = new QVBoxLayout();
+	name_layout->addWidget(l_name);
+	name_layout->addWidget(nameInput);
+	QGroupBox* gb_name = new QGroupBox("Name Your Budget");
+	gb_name->setLayout(name_layout);
+	nameInput->setText(QString::fromStdString(budget.getName()));
+
 	QGridLayout *layout1 = new QGridLayout;
 	layout1->addWidget(expenseWidget, 0, 0);
 	QGroupBox* group1 = new QGroupBox("Manage Expenses");
@@ -39,6 +48,7 @@ QVBoxLayout* BudgetCreator::createLayout() {
 	buttons->setLayout(buttons_layout);
 
 	QVBoxLayout* v = new QVBoxLayout;
+	v->addWidget(gb_name);
 	v->addWidget(group3);
 	v->addWidget(tools);
 	v->addWidget(buttons);
@@ -55,6 +65,7 @@ BudgetCreator::BudgetCreator(const Budget& b) {
 	incomeWidget = new IncomeWidget(budget);
 	b_create = new QPushButton("Create");
 	b_cancel = new QPushButton("Cancel");
+	nameInput = new QLineEdit();
 
 	QVBoxLayout* layout = createLayout();
 	setLayout(layout);
@@ -70,10 +81,11 @@ BudgetCreator::~BudgetCreator() {
 
 ///Create a new budget based on the items listed in the GUI
 void BudgetCreator::createBudget() {
+	std::string name = nameInput->text().toStdString();
 	double income = incomeWidget->getIncome();
 	std::map<std::string, double> weights = weightsWidget->getWeights();
 	std::map<std::string, double> expenses = expenseWidget->getExpenses();
-	budget = Budget(income);
+	budget = Budget(name, income);
 
 	for (auto &expense : expenses) {
 		budget.addExpense(expense.first, expense.second);
@@ -83,6 +95,7 @@ void BudgetCreator::createBudget() {
 		budget.addWeight(weight.first, weight.second);
 	}
 
-	//budget.print(std::cout);
+	BudgetView* bv = new BudgetView(budget);
+	bv->show();
 }
 
