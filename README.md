@@ -43,6 +43,7 @@ To run the GUI from the Budget Creator page, type the following command
 Say you want to build a budget for each month with the following income and known expenses
 
 ```
+Name: Example
 Income: $1000.00
 Expenses:
 	car payment: $145.50
@@ -57,7 +58,8 @@ Weights:
 	clothing: 20%
 	sports: 20%
 ```
-* First start by setting the income to $1000.00 by hitting the up arrow 10 times on the income line
+* First start by setting the name of the budget by typing out "Example"
+* Set the income to $1000.00 by hitting the up arrow 10 times on the income line
 * Then, for each expense, enter the cost in the cost box using either the arrows or manually typing, and then write the name of the expense in the description box.
 * Press Add to add the expense to the list.
 * Repeat this process for each weight in the weights section.
