@@ -6,6 +6,7 @@ Description: Implementation of functions for WeightsWidget class (declared in we
 */
 
 #include "weights_widget.hpp"
+#include "util.hpp"
 #include <iomanip>
 #include <sstream>
 #include <QDebug>
@@ -89,12 +90,8 @@ WeightsWidget::WeightsWidget(const Budget& b) {
 	for (auto &a : b.getWeights()) {
 		std::string name = a.first;
 		double w = a.second;
-
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(2) << w;
-		std::string s = stream.str();
-		QString item_to_add = QString::fromStdString(s + "%" + "\t" + name);
-		itemList->addItem(item_to_add);
+		std::string item_to_add = util::weightToString(w, name);
+		itemList->addItem(QString::fromStdString(item_to_add));
 	}
 
 	QObject::connect(b_clear, SIGNAL(clicked()), this, SLOT(clearEntry()));
@@ -117,14 +114,9 @@ void WeightsWidget::clearEntry() {
 ///Slot function for adding a weight item to the list in the format: "weight%	description"
 void WeightsWidget::addWeight() {
 	double weight_value = weight->value();
-
-	std::stringstream stream;
-	stream << std::fixed << std::setprecision(1) << weight_value;
-	std::string s = stream.str();
-	QString weight_description = description->text();
-
-	QString item_to_add = QString::fromStdString(s + "%" + "\t") + weight_description;
-	itemList->addItem(item_to_add);
+	std::string weight_description = description->text().toStdString();
+	std::string item_to_add = util::weightToString(weight_value, weight_description);
+	itemList->addItem(QString::fromStdString(item_to_add));
 }
 
 ///Slot function for activating the buttons once an item has been selected
@@ -143,13 +135,9 @@ void WeightsWidget::editEntry() {
 	QListWidgetItem* item = itemList->takeItem(itemList->currentRow());
 	QString s = item->text();
 	std::string weightString = s.toStdString();
-
-	std::string w = weightString.substr(0, weightString.find("%"));
-	double weightValue = atof(w.c_str());
-	weight->setValue(weightValue);
-
-	std::string descriptionString = weightString.substr(weightString.find("\t") + 1, weightString.length());
-	description->setText(QString::fromStdString(descriptionString));
+	std::pair<double, std::string> weightPair = util::weightStringToPair(weightString);
+	weight->setValue(weightPair.first);
+	description->setText(QString::fromStdString(weightPair.second));
 }
 
 ///Function to create a map of all the weight items listed by the item list
@@ -160,11 +148,8 @@ std::map<std::string, double> WeightsWidget::getWeights() {
 		QListWidgetItem* item = itemList->item(i);
 		QString s = item->text();
 		std::string weightString = s.toStdString();
-		std::string w = weightString.substr(0, weightString.find("%"));
-
-		double weightValue = atof(w.c_str());
-		std::string descriptionString = weightString.substr(weightString.find("\t") + 1, weightString.length());
-		retMap[descriptionString] = weightValue;
+		std::pair<double, std::string> weightPair = util::weightStringToPair(weightString);
+		retMap[weightPair.second] = weightPair.first;
 	}
 	return retMap;
 }

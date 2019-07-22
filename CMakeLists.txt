@@ -25,6 +25,7 @@ set(gui_src
 	income_widget.cpp
 	budget_creator.cpp
 	budget_view.cpp
+	util.cpp
   )
 
 # main entry point for GUI interface

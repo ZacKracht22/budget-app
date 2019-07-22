@@ -6,6 +6,7 @@ Description: Implementation of functions for ExpenseWidget class (declared in ex
 */
 
 #include "expense_widget.hpp"
+#include "util.hpp"
 #include <iomanip>
 #include <sstream>
 #include <QDebug>
@@ -90,12 +91,9 @@ ExpenseWidget::ExpenseWidget(const Budget& b) {
 	for (auto &a : b.getExpenses()) {
 		std::string name = a.first;
 		double c = a.second;
-		
-		std::stringstream stream;
-		stream << std::fixed << std::setprecision(2) << c;
-		std::string s = stream.str();
-		QString item_to_add = QString::fromStdString("$" + s + "\t" + name);
-		itemList->addItem(item_to_add);
+
+		std::string s = util::expenseToString(c, name);
+		itemList->addItem(QString::fromStdString(s));
 	}
 
 	//Connect signals of buttons to slot functions
@@ -120,14 +118,9 @@ void ExpenseWidget::clearEntry() {
 ///Slot function for adding a new expense item onto the list in the fromat "$cost	description"
 void ExpenseWidget::addExpense() {
 	double expense_cost = cost->value();
-
-	std::stringstream stream;
-	stream << std::fixed << std::setprecision(2) << expense_cost;
-	std::string s = stream.str();
-	QString expence_description = description->text();
-
-	QString item_to_add = QString::fromStdString("$" + s + "\t") + expence_description;
-	itemList->addItem(item_to_add);
+	std::string expence_description = description->text().toStdString;
+	std::string s = util::expenseToString(expense_cost, expence_description);
+	itemList->addItem(QString::fromStdString(s));
 }
 
 ///Slot to activate buttons once an item has been selected in the item list
@@ -146,14 +139,9 @@ void ExpenseWidget::editEntry() {
 	QListWidgetItem* item = itemList->takeItem(itemList->currentRow());
 	QString s = item->text();
 	std::string expenseString = s.toStdString();
-
-	std::string costString = expenseString.substr(0, expenseString.find("\t"));
-	costString = costString.substr(1, costString.length()); //remove '$'
-	double costValue = atof(costString.c_str());
-	cost->setValue(costValue);
-
-	std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
-	description->setText(QString::fromStdString(descriptionString));
+	std::pair<double, std::string> expense = util::expenseStringToPair(expenseString);
+	cost->setValue(expense.first);
+	description->setText(QString::fromStdString(expense.second));
 }
 
 ///Creates a map of all the expenses listed to be used for instance of new budget
@@ -164,12 +152,8 @@ std::map<std::string, double> ExpenseWidget::getExpenses() {
 		QListWidgetItem* item = itemList->item(i);
 		QString s = item->text();
 		std::string expenseString = s.toStdString();
-		std::string costString = expenseString.substr(0, expenseString.find("\t"));
-		costString = costString.substr(1, costString.length()); //remove '$'
-
-		double costValue = atof(costString.c_str());
-		std::string descriptionString = expenseString.substr(expenseString.find("\t") + 1, expenseString.length());
-		retMap[descriptionString] = costValue;
+		std::pair<double, std::string> expense = util::expenseStringToPair(expenseString);
+		retMap[expense.second] = expense.first;
 	}
 	return retMap;
 }
