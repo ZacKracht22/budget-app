@@ -118,7 +118,7 @@ void ExpenseWidget::clearEntry() {
 ///Slot function for adding a new expense item onto the list in the fromat "$cost	description"
 void ExpenseWidget::addExpense() {
 	double expense_cost = cost->value();
-	std::string expence_description = description->text().toStdString;
+	std::string expence_description = description->text().toStdString();
 	std::string s = util::expenseToString(expense_cost, expence_description);
 	itemList->addItem(QString::fromStdString(s));
 }

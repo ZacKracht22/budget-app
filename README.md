@@ -70,5 +70,10 @@ Weights:
 To run the unit tests executable for the Budget Class, type the following command
 
 ```
-./Debug/unit_tests
+./Debug/budget_tests
+```
+To run the unit tests executable for the util namespace, type the following command
+
+```
+./Debug/util_tests
 ```

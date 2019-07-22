@@ -60,13 +60,12 @@ public:
 	void print(std::ostream & out) noexcept;
 
 private:
-	std::map<std::string, double> m_expenses;
-	std::map<std::string, double> m_weights;
-	
-	double m_income;
-	double m_remaining;
-	double m_totalWeight;
-	std::string m_name;
+	std::map<std::string, double> expensesMap;
+	std::map<std::string, double> weightsMap;
+	double incomeTotal;
+	double remainingIncome;
+	double totalWeight;
+	std::string budgetName;
 };
 
 
