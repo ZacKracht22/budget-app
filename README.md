@@ -1,6 +1,9 @@
 # Budget App
 The Budget App is a tool for creating, editing, and managing personal budgets. Budgets in this app consist of an income value, a list of expenses, and a list of weights. The weights are to set a percentage of the remaining income, after the expenses have been subtracted, to specific categories.
 
+## Development Status
+The application is currently under development by Zac Kracht. Currently, the application opens to the budget creation widget where the user can set the parameters of their budget. Clicking 'Create' then opens a simple pie chart showing all expenses for the budget. The next stage of development is to create a better visualization for the budget, and the ability to save and load budgets.
+
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for testing purposes.
 
