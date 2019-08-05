@@ -6,7 +6,10 @@ Description: Implementation of Budget class for creating and editing a budget
 */
 
 #include "budget.hpp"
+#include "util.hpp"
 #include <stdexcept>
+#include <iostream>
+#include <fstream>
 
 ///default constructor
 Budget::Budget() {
@@ -39,6 +42,34 @@ Budget::Budget(std::string name, double income, const std::map<std::string, doub
 	for (auto &w : weightsMap) {
 		totalWeight += w.second;
 	}
+}
+
+///Read in a budget's contents that were written to a file using the print function
+Budget::Budget(std::string fileName) {
+	std::ifstream in(fileName);
+	in.ignore(10, ' ');
+	std::getline(in, budgetName);
+	in.ignore(10, ' ');
+	std::string line;
+	std::getline(in, line);	
+	//Convert read in string to a double
+	incomeTotal = atof(line.c_str());;
+	in.ignore(10,'\n');
+	std::getline(in, line);
+	//Read in expenses until the line "Weights:" apppears in the file
+	while (line != "Weights:") {
+		std::pair<double, std::string> temp = util::expenseStringToPair(line);
+		expensesMap[temp.second] = temp.first;
+		std::getline(in, line);
+	}
+	//Read in weights until end of file
+	std::getline(in, line);
+	while (!in.fail()) {
+		std::pair<double, std::string> temp = util::weightStringToPair(line);
+		weightsMap[temp.second] = temp.first;
+		std::getline(in, line);
+	}
+	in.close();
 }
 
 ///copy constructor
@@ -210,28 +241,20 @@ std::map<std::string, double> Budget::weightsToValues() noexcept {
 }
 
 /**
-Prints a budget to the stream out in the following format:
-New Budget:
-Income: *income*
-Expenses:
-	expense1 name: expense1 cost
-	expense2 name: expense2 cost
-	expenseN name: expenseN cost
-Weights:
-	weight1 name: weight1 cost
-	weight2 name: weight2 cost
-	weightM name: weightM cost
+Prints a budget to the stream
 */
-void Budget::print(std::ostream & out) noexcept {
-	out << "New Budget:\n";
+void Budget::print(std::string fileName) noexcept {
+	std::ofstream out(fileName);
 	out << "Name: " << budgetName << "\n";
 	out << "Income: " << incomeTotal << "\n";
 	out << "Expenses:\n";
 	for (auto &a : expensesMap) {
-		out << "\t" << a.first << ": " << a.second << "\n";
+		out << util::expenseToString(a.second, a.first) << "\n";
 	}
-	out << "Weights:\n";
+	out << "Weights:";
 	for (auto &b : weightsMap) {
-		out << "\t" << b.first << ": " << b.second << "\n";
+		out << "\n" << util::weightToString(b.second, b.first);
 	}
+	out.close();
 }
+

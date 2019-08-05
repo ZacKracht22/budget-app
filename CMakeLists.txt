@@ -41,7 +41,7 @@ if (Qt5Widgets_FOUND AND Qt5Test_FOUND)
 	add_executable(budget_app ${gui_main} ${gui_src})
 	target_link_libraries(budget_app Qt5::Widgets Qt5::Charts Qt5::Test)
 
-	add_executable(budget_tests budget.cpp budget_test.cpp)
+	add_executable(budget_tests budget.cpp budget_test.cpp util.cpp)
 	target_link_libraries(budget_tests Qt5::Widgets Qt5::Test)
 
 	add_executable(util_tests util.cpp util_test.cpp)

@@ -30,6 +30,7 @@ public:
 	Budget();
 	Budget(std::string name, double income);
 	Budget(std::string name, double income, const std::map<std::string, double>& expenses, const std::map<std::string, double>& weights);
+	Budget(std::string fileName);
 	Budget(const Budget& x);
 	~Budget();
 	
@@ -55,9 +56,9 @@ public:
 	void removeExpense(std::string name);
 	void removeWeight(std::string name);
 
-	//Visualization functions
+	//Visualization and loading functions
 	std::map<std::string, double> weightsToValues() noexcept;
-	void print(std::ostream & out) noexcept;
+	void print(std::string fileName) noexcept;
 
 private:
 	std::map<std::string, double> expensesMap;

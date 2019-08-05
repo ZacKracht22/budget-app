@@ -26,6 +26,7 @@ class BudgetTest : public QObject {
 		void RemoveExpenseTest();
 		void RemoveWeightTest();
 		void WeightsToValuesTest();
+		void FromFileConstructorTest();
 	private:
 		Budget test_a;
 		Budget test_b;
@@ -153,7 +154,16 @@ void BudgetTest::WeightsToValuesTest() {
 	QVERIFY(test["savings"] > 427.40 && test["savings"] < 427.41);
 }
 
-
+void BudgetTest::FromFileConstructorTest() {
+	Budget testBudget("Test Budget", 1000.0);
+	testBudget.addExpense("a", 25.0);
+	testBudget.addExpense("b", 75.0);
+	testBudget.addExpense("c", 12.12);
+	testBudget.addWeight("y", 12.12);
+	testBudget.addWeight("z", 25.0);
+	Budget readBudget("temp.txt");
+	QVERIFY(readBudget == testBudget);
+}
 
 QTEST_MAIN(BudgetTest)
 #include "budget_test.moc"
